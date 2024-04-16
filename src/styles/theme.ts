@@ -19,8 +19,16 @@ export const theme = {
   },
 
   fontFamily: {
-    regular: "RobotoMono-Regular",
-    semibold: "RobotoMono-SemiBold",
-    bold: "RobotoMono-Bold",
+    regular: "Roboto_400Regular",
+    medium: "Roboto_500Medium",
+    bold: "Roboto_700Bold",
+  },
+
+  borderRadius: {
+    extraSmall: 5,
+    small: 8,
+    medium: 16,
+    large: 24,
+    extraLarge: 40,
   },
 };

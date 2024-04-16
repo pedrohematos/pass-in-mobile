@@ -5,12 +5,11 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/adaptive-images/icon.png",
-    "scheme": "myapp",
+    "scheme": "pass-in",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./src/assets/adaptive-images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -19,7 +18,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#F48F56"
       }
     },
     "web": {
