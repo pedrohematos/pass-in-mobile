@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { styles } from "./styles";
 
-interface ButtomProps extends TouchableOpacityProps {
+interface ButtonProps extends TouchableOpacityProps {
   title: string;
   isLoading?: boolean;
 }
@@ -16,7 +16,7 @@ export function Button({
   title,
   isLoading = false,
   ...otherProps
-}: ButtomProps) {
+}: ButtonProps) {
   return (
     <TouchableOpacity
       style={styles.container}
