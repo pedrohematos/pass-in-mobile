@@ -47,6 +47,7 @@ export default function RegisterScreen() {
 
           <Input.Field
             placeholderTextColor={theme.color.gray[200]}
+            autoCapitalize="none"
             keyboardType="email-address"
             placeholder="E-mail"
             onChangeText={setEmail}
