@@ -92,17 +92,10 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
-  qrCode: {
-    width: 128,
-    height: 128,
-  },
-
-  qrCodeTextTouchable: {
-    marginTop: 12,
-  },
-
   qrCodeText: {
+    marginTop: 12,
     fontSize: theme.fontSize.small,
     color: theme.color.orange[500],
+    textAlign: "center",
   },
 });

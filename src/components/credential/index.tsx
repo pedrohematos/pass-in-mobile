@@ -1,3 +1,4 @@
+import { QRCode } from "@/components/qrcode";
 import { theme } from "@/styles/theme";
 import { Feather } from "@expo/vector-icons";
 import {
@@ -12,9 +13,14 @@ import { styles } from "./styles";
 export interface CredentialProps {
   imageUrl?: string;
   onChangeAvatar: () => void;
+  onExpandQRCode: () => void;
 }
 
-export function Credential({ imageUrl, onChangeAvatar }: CredentialProps) {
+export function Credential({
+  imageUrl,
+  onChangeAvatar,
+  onExpandQRCode,
+}: CredentialProps) {
   return (
     <View style={styles.container}>
       <Image source={require("@/assets/ticket/band.png")} style={styles.band} />
@@ -50,15 +56,9 @@ export function Credential({ imageUrl, onChangeAvatar }: CredentialProps) {
 
         <Text style={styles.email}>pedrohematos@outlook.com</Text>
 
-        <Image
-          source={require("@/assets/ticket/qrcode.png")}
-          style={styles.qrCode}
-        />
+        <TouchableOpacity activeOpacity={0.7} onPress={onExpandQRCode}>
+          <QRCode value={"teste"} size={120} />
 
-        <TouchableOpacity
-          style={styles.qrCodeTextTouchable}
-          activeOpacity={0.7}
-        >
           <Text style={styles.qrCodeText}>Zoom in on QR Code</Text>
         </TouchableOpacity>
       </View>

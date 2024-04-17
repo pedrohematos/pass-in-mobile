@@ -1,15 +1,24 @@
 import { Button } from "@/components/button";
 import { Credential } from "@/components/credential";
 import { Header } from "@/components/header";
+import { QRCode } from "@/components/qrcode";
 import { theme } from "@/styles/theme";
 import { FontAwesome } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
-import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { styles } from "./styles";
 
 export default function TicketScreen() {
   const [imageUrl, setImageUrl] = useState("");
+  const [expandQRCode, setExpandQRCode] = useState(false);
 
   async function handleSelectImage() {
     try {
@@ -28,6 +37,14 @@ export default function TicketScreen() {
     }
   }
 
+  function onExpandQRCode() {
+    setExpandQRCode(true);
+  }
+
+  function onCloseExpandQRCode() {
+    setExpandQRCode(false);
+  }
+
   return (
     <View style={styles.container}>
       <Header title="My Credential" />
@@ -37,7 +54,11 @@ export default function TicketScreen() {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        <Credential imageUrl={imageUrl} onChangeAvatar={handleSelectImage} />
+        <Credential
+          imageUrl={imageUrl}
+          onChangeAvatar={handleSelectImage}
+          onExpandQRCode={onExpandQRCode}
+        />
 
         <FontAwesome
           name="angle-double-down"
@@ -61,6 +82,15 @@ export default function TicketScreen() {
           <Text style={styles.removeTicket}>Remove Ticket</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      <Modal visible={expandQRCode} statusBarTranslucent>
+        <View style={styles.qrcodeModal}>
+          <TouchableOpacity activeOpacity={0.7} onPress={onCloseExpandQRCode}>
+            <QRCode value={"teste"} size={300} />
+            <Text style={styles.qrcodeModalCloseText}>Close QRCode</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }

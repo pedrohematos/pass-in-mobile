@@ -43,4 +43,17 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.bold,
     textAlign: "center",
   },
+
+  qrcodeModal: {
+    flex: 1,
+    backgroundColor: theme.color.green[500],
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  qrcodeModalCloseText: {
+    marginTop: 30,
+    color: theme.color.orange[500],
+    textAlign: "center",
+  },
 });
