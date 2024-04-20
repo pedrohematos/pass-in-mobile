@@ -2,14 +2,17 @@ import { Button } from "@/components/button";
 import { Credential } from "@/components/credential";
 import { Header } from "@/components/header";
 import { QRCode } from "@/components/qrcode";
+import { useBadgeStore } from "@/store/bagde-store";
 import { theme } from "@/styles/theme";
 import { FontAwesome } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { Redirect } from "expo-router";
 import { useState } from "react";
 import {
   Alert,
   Modal,
   ScrollView,
+  Share,
   Text,
   TouchableOpacity,
   View,
@@ -17,8 +20,9 @@ import {
 import { styles } from "./styles";
 
 export default function TicketScreen() {
-  const [imageUrl, setImageUrl] = useState("");
   const [expandQRCode, setExpandQRCode] = useState(false);
+
+  const badgeStorage = useBadgeStore();
 
   async function handleSelectImage() {
     try {
@@ -29,11 +33,23 @@ export default function TicketScreen() {
       });
 
       if (result.assets) {
-        setImageUrl(result.assets[0].uri);
+        badgeStorage.updateAvatar(result.assets[0].uri);
       }
     } catch (error) {
       console.log(error);
       Alert.alert("Picture", "It was not possible to select a picture.");
+    }
+  }
+
+  async function handleShare() {
+    try {
+      if (badgeStorage.data?.checkInURL) {
+        await Share.share({
+          message: badgeStorage.data.checkInURL,
+        });
+      }
+    } catch (error) {
+      Alert.alert("Share", "Unable to share!");
     }
   }
 
@@ -43,6 +59,10 @@ export default function TicketScreen() {
 
   function onCloseExpandQRCode() {
     setExpandQRCode(false);
+  }
+
+  if (!badgeStorage.data?.checkInURL) {
+    return <Redirect href="/home/" />;
   }
 
   return (
@@ -55,7 +75,7 @@ export default function TicketScreen() {
         showsVerticalScrollIndicator={false}
       >
         <Credential
-          imageUrl={imageUrl}
+          data={badgeStorage.data}
           onChangeAvatar={handleSelectImage}
           onExpandQRCode={onExpandQRCode}
         />
@@ -70,14 +90,16 @@ export default function TicketScreen() {
         <Text style={styles.shareTitle}>Share credential</Text>
 
         <Text style={styles.shareText}>
-          Show the world that you will participate in the United Summit!
+          Show the world that you will participate in the{" "}
+          {badgeStorage.data.eventTitle}!
         </Text>
 
-        <Button title="Share" />
+        <Button title="Share" onPress={handleShare} />
 
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.removeTicketTouchable}
+          onPress={badgeStorage.remove}
         >
           <Text style={styles.removeTicket}>Remove Ticket</Text>
         </TouchableOpacity>

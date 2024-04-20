@@ -1,19 +1,46 @@
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
+import { api } from "@/server/api";
+import { useBadgeStore } from "@/store/bagde-store";
 import { theme } from "@/styles/theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import { useState } from "react";
 import { Alert, Image, View } from "react-native";
 import { styles } from "./styles";
 
 export default function HomeScreen() {
   const [code, setCode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleAccessCredential() {
-    if (!code.trim()) {
-      return Alert.alert("Ticket", "Enter the ticket code!");
+  const badgeStore = useBadgeStore();
+
+  async function handleAccessCredential() {
+    try {
+      if (!code.trim()) {
+        return Alert.alert("Ticket", "Enter the ticket code!");
+      }
+
+      setIsLoading(true);
+
+      const { data } = await api.get(`/attendees/${code}/badge`);
+
+      badgeStore.save(data.badge);
+    } catch (error) {
+      console.log(error);
+
+      if (error?.response?.data?.message) {
+        Alert.alert("Credential", error.response.data.message);
+      } else {
+        Alert.alert("Credential", "Credential not found");
+      }
+    } finally {
+      setIsLoading(false);
     }
+  }
+
+  if (badgeStore.data?.checkInURL) {
+    return <Redirect href="/ticket/" />;
   }
 
   return (
@@ -36,9 +63,13 @@ export default function HomeScreen() {
         </Input>
       </View>
 
-      <Button title="Access credential" onPress={handleAccessCredential} />
+      <Button
+        title="Access credential"
+        onPress={handleAccessCredential}
+        isLoading={isLoading}
+      />
 
-      <Link style={styles.link} href="/register">
+      <Link style={styles.link} href="/register/">
         Don't have a ticket?
       </Link>
     </View>

@@ -1,4 +1,5 @@
 import { QRCode } from "@/components/qrcode";
+import { BadgeStore } from "@/store/bagde-store";
 import { theme } from "@/styles/theme";
 import { Feather } from "@expo/vector-icons";
 import {
@@ -11,13 +12,13 @@ import {
 import { styles } from "./styles";
 
 export interface CredentialProps {
-  imageUrl?: string;
+  data: BadgeStore;
   onChangeAvatar: () => void;
   onExpandQRCode: () => void;
 }
 
 export function Credential({
-  imageUrl,
+  data,
   onChangeAvatar,
   onExpandQRCode,
 }: CredentialProps) {
@@ -31,16 +32,16 @@ export function Credential({
           style={styles.cardHeader}
         >
           <View style={styles.textContainer}>
-            <Text style={styles.title}>Unit Summit</Text>
-            <Text style={styles.code}>#123</Text>
+            <Text style={styles.title}>{data.eventTitle}</Text>
+            <Text style={styles.code}>#{data.id}</Text>
           </View>
 
           <View style={styles.shadow} />
         </ImageBackground>
 
-        {imageUrl ? (
+        {data.image ? (
           <TouchableOpacity activeOpacity={0.9} onPress={onChangeAvatar}>
-            <Image source={{ uri: imageUrl }} style={styles.profilePicture} />
+            <Image source={{ uri: data.image }} style={styles.profilePicture} />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
@@ -52,12 +53,12 @@ export function Credential({
           </TouchableOpacity>
         )}
 
-        <Text style={styles.name}>Pedro Matos</Text>
+        <Text style={styles.name}>{data.name}</Text>
 
-        <Text style={styles.email}>pedrohematos@outlook.com</Text>
+        <Text style={styles.email}>{data.email}</Text>
 
         <TouchableOpacity activeOpacity={0.7} onPress={onExpandQRCode}>
-          <QRCode value={"teste"} size={120} />
+          <QRCode value={data.checkInURL} size={120} />
 
           <Text style={styles.qrCodeText}>Zoom in on QR Code</Text>
         </TouchableOpacity>
