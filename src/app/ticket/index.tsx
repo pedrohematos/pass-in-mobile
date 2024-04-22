@@ -7,6 +7,7 @@ import { theme } from "@/styles/theme";
 import { FontAwesome } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { Redirect } from "expo-router";
+import { MotiView } from "moti";
 import { useState } from "react";
 import {
   Alert,
@@ -80,12 +81,26 @@ export default function TicketScreen() {
           onExpandQRCode={onExpandQRCode}
         />
 
-        <FontAwesome
-          name="angle-double-down"
-          size={24}
-          color={theme.color.gray[300]}
-          style={styles.downArrow}
-        />
+        <MotiView
+          from={{
+            translateY: 0,
+          }}
+          animate={{
+            translateY: 10,
+          }}
+          transition={{
+            loop: true,
+            type: "timing",
+            duration: 700,
+          }}
+        >
+          <FontAwesome
+            name="angle-double-down"
+            size={24}
+            color={theme.color.gray[300]}
+            style={styles.downArrow}
+          />
+        </MotiView>
 
         <Text style={styles.shareTitle}>Share credential</Text>
 
